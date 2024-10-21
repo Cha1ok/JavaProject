@@ -8,21 +8,19 @@ import java.util.Scanner;
 
 public class LUDecomposition {
 
-    private static Object[] readMatrixAndVectorFromFile(String filename) throws FileNotFoundException {
+    private static void readMatrixAndVectorFromFile(String filename, double[][] matrix, double[] vector) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(filename));
         int n = sc.nextInt();
-        double[][] matrix = new double[n][n];
+        // int n = matrix.length;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 matrix[i][j] = sc.nextDouble();
             }
         }
-        double[] vector = new double[n];
         for (int i = 0; i < n; i++) {
             vector[i] = sc.nextDouble();
         }
         sc.close();
-        return new Object[]{matrix, vector};
     }
 
     private static void writeSolutionToFile(String filename, double[] solution) throws IOException {
@@ -61,11 +59,25 @@ public class LUDecomposition {
             for (int j = 0; j < i; j++) {
                 sum += L[i][j] * y[j];
             }
+
             y[i] = (b[i] - sum) / L[i][i];
+
         }
         return y;
     }
 
+    private static int test(double[][] L) {
+        for (int i = 0; i < L.length; i++) {
+            for (int j = 0; j < L.length; j++) {
+                if (L[i][i] < 6e-1) {
+                    System.out.println(i+1 + " Минор=0");
+                    System.out.println("Можеет помочь перестановка строк");
+                    return 0;
+                }
+            }
+        }
+        return 1;
+    }
     private static double[] backwardSubstitution(double[][] U, double[] y) {
         int n = U.length;
         double[] x = new double[n];
@@ -79,15 +91,19 @@ public class LUDecomposition {
         return x;
     }
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws IOException {
 
-        Object[] data = readMatrixAndVectorFromFile("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task1/data.txt");
-        double[][] A = (double[][]) data[0];
-        double[] b = (double[]) data[1];
+        File file=new File("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task1/data.txt");
+        Scanner sc=new Scanner(file);
+        int n=sc.nextInt();
 
-        int n = A.length;
 
-        // Создаем матрицы L и U
+        double[][] A= new double[n][n];
+        double[] b = new double[n];
+        readMatrixAndVectorFromFile("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task1/data.txt",A,b);
+
+
+
         double[][] L = new double[n][n];
         double[][] U = new double[n][n];
 
@@ -97,10 +113,20 @@ public class LUDecomposition {
 
         luDecomposition(A, L, U);
 
-        double[] y = forwardSubstitution(L, b);
+        for(int i=0;i<n;i++){
 
-        double[] x = backwardSubstitution(U, y);
+            for(int j=0;j<n;j++){
+                System.out.println(L[i][j]);
+            }
+        }
+        if(test(L)==1) {
 
-        writeSolutionToFile("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task1/solution.txt", x);
+            double[] y = forwardSubstitution(L, b);
+
+            double[] x = backwardSubstitution(U, y);
+
+            writeSolutionToFile("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task1/solution.txt", x);
+        }
+
     }
 }
