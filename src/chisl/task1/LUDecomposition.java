@@ -46,6 +46,9 @@ public class LUDecomposition {
                 for (int k = 0; k < i; k++) {
                     sum += L[i][k] * U[k][j];
                 }
+                if(L[i][i]==0){
+                    System.exit(0);
+                }
                 U[i][j] = (A[i][j] - sum) / L[i][i];
             }
         }
