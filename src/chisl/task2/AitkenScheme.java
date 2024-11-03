@@ -1,15 +1,14 @@
 package chisl.task2;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class AitkenScheme {
 
     public static double aitkenScheme(double[] x, double[] y, double xp) {
         int n = x.length;
         double[][] p = new double[n][n];
-       // double[][] eps = new double[n][n];
+       // double[][] eps = new double[n][n]; 
 
         for (int j = 0; j < n; j++) {
             p[j][j] = y[j];
@@ -42,7 +41,7 @@ public class AitkenScheme {
 //                System.out.print(eps[i][j]+ "");
 //
 //                if (eps[i][j] == minEps) {
-//                    return Math.round(p[i][j] * 10000.0) / 10000.0; // Округляем до 4 знаков
+//                    return Math.round(p[i][j] * 10000.0) / 10000.0;
 //                }
 //            }
 //        }
@@ -52,7 +51,7 @@ public class AitkenScheme {
 
     public static void main(String[] args) throws IOException {
 
-        File inputFile = new File("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task2/input.txt");
+        File inputFile = new File("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task2/input2.txt");
         File outputFile = new File("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task2/output.txt");
 
 
@@ -65,14 +64,14 @@ public class AitkenScheme {
             x[i] = Double.parseDouble(xValues[i]);
         }
 
-        // Чтение массива y
+
         String[] yValues = scanner.nextLine().split(" ");
         double[] y = new double[yValues.length];
         for (int i = 0; i < yValues.length; i++) {
             y[i] = Double.parseDouble(yValues[i]);
         }
 
-        // Чтение точки для интерполяции
+
 //        String[] point=scanner.nextLine().split(" ");
 //        double[] p=new double[point.length];
 //        for(int i=0;i< point.length;i++){
@@ -81,7 +80,7 @@ public class AitkenScheme {
 //        scanner.close();
 
 
-        // Вычисление значения функции по схеме Эйткена
+
         //double aitkenValue = aitkenScheme(x, y, point);
 
         // Записываем результат в файл
