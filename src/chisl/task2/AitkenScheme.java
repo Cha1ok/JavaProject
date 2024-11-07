@@ -8,8 +8,6 @@ public class AitkenScheme {
     public static double aitkenScheme(double[] x, double[] y, double xp) {
         int n = x.length;
         double[][] p = new double[n][n];
-       // double[][] eps = new double[n][n]; 
-
         for (int j = 0; j < n; j++) {
             p[j][j] = y[j];
             for (int i = j - 1; i >= 0; i--) {
@@ -19,39 +17,14 @@ public class AitkenScheme {
                 if (i + 1 < n && j - 1 >= 0) {
                     p[i][j] = ((xp - x[i]) * p[i + 1][j] - (xp - x[j]) * p[i][j - 1]) / (x[j] - x[i]);
                 }
-
-//                if (i > 0 && j - 1 >= 0) {
-//                    eps[i][j] = Math.abs(p[i][j] - p[i - 1][j - 1]);
-//                }
-
-
-//                if (i > 0 && Math.abs(p[i][j] - p[i - 1][j - 1]) < 0.001) {
-//                    System.out.println(i+" "+j+"IMP");
-//                    return Math.round(p[i][j] * 10000.0) / 10000.0;
-//                }
             }
         }
-
-
-        //double minEps = Arrays.stream(eps).flatMapToDouble(Arrays::stream).min().getAsDouble();
-
-//        for (int i = 0; i < eps.length; i++) {
-//            System.out.println(" ");
-//            for (int j = 0; j < eps[i].length; j++) {
-//                System.out.print(eps[i][j]+ "");
-//
-//                if (eps[i][j] == minEps) {
-//                    return Math.round(p[i][j] * 10000.0) / 10000.0;
-//                }
-//            }
-//        }
-
         return p[0][n-1];
     }
 
     public static void main(String[] args) throws IOException {
 
-        File inputFile = new File("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task2/input2.txt");
+        File inputFile = new File("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task2/input.txt");
         File outputFile = new File("C:/Users/kupts/IdeaProjects/untitled/src/chisl/task2/output.txt");
 
 
@@ -72,17 +45,6 @@ public class AitkenScheme {
         }
 
 
-//        String[] point=scanner.nextLine().split(" ");
-//        double[] p=new double[point.length];
-//        for(int i=0;i< point.length;i++){
-//            p[i]=Double.parseDouble(point[i]);
-//        }
-//        scanner.close();
-
-
-
-        //double aitkenValue = aitkenScheme(x, y, point);
-
         // Записываем результат в файл
         System.out.println(x[x.length-1]);
         FileWriter writer=new FileWriter(outputFile);
@@ -91,7 +53,7 @@ public class AitkenScheme {
             writer.write(String.valueOf(temp)+"\n");
             System.out.println("В точке " + i + " значение функции (Схема Эйткена): " + aitkenScheme(x,y,i));
         }
-       // writer.write("В точке " + point + " значение функции (Схема Эйткена): " + aitkenValue);
+
         writer.close();
 
         System.out.println("Результат вычислений записан в файл output.txt");
