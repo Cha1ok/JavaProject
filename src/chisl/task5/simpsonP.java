@@ -22,34 +22,41 @@ public class simpsonP {
         return currentIntegral;
     }
 
-    public static double calculateSimpson(Function<Double, Double> f, double a, double b, int n) {
-        double h = (b - a) / n;
-        double sum1 = f.apply(a) + f.apply(b);
-        double sum2 = 0;
-        double sum3 = 0;
+//    public static double calculateSimpson(Function<Double, Double> f, double a, double b, int n) {
+//        double h = (b - a) / n;
+//        double sum1 = f.apply(a) + f.apply(b);
+//        double sum2 = 0;
+//        double sum3 = 0;
+//
+//        for (int i = 1; i < n; i++) {
+//            double x = a + i * h;
+//            if (i % 2 == 1) {
+//                sum2 += f.apply(x);
+//            } else {
+//                sum3 += f.apply(x);
+//            }
+//        }
+//
+//        return h / 3 * (sum1 + 4 * sum2 + 2 * sum3);
+//    }
 
-        for (int i = 1; i < n; i++) {
-            double x = a + i * h;
-            if (i % 2 == 1) {
-                sum2 += f.apply(x);
-            } else {
-                sum3 += f.apply(x);
-            }
-        }
+    public static double calculateSimpson(Function<Double, Double> f, double a, double b, int n){
+        double h=b-a;
+        double sum1=f.apply(a)+f.apply(b);
+        double sum2=f.apply((a+b)/2);
 
-        return h / 3 * (sum1 + 4 * sum2 + 2 * sum3);
+        return h/6*(sum1+4*sum2);
     }
 
 
     public static void main(String[] args) {
 
-        File inputFile = new File("C:\\Users\\kupts\\IdeaProjects\\untitled\\src\\chisl\\task5\\input3.txt");
+        File inputFile = new File("C:\\Users\\kupts\\IdeaProjects\\untitled\\src\\chisl\\task5\\input2.txt");
 
         try (Scanner scanner = new Scanner(inputFile)) {
 
             double a = scanner.nextDouble();
             double b = scanner.nextDouble();
-            double c = scanner.nextDouble();
             int n = scanner.nextInt();
 
             double epsilon_1 = 0.001;
@@ -59,7 +66,7 @@ public class simpsonP {
             Function<Double, Double> f3 = (x) -> 1 / (1 + Math.pow(x, 2));
 
 
-            double integral = simpsonsIntegration(f3, a, b, epsilon_1, n);
+            double integral = simpsonsIntegration(f2, a, b, epsilon_1, n);
 
             File outputFile = new File("C:\\Users\\kupts\\IdeaProjects\\untitled\\src\\chisl\\task5\\output.txt");
             try (FileWriter writer = new FileWriter(outputFile)) {

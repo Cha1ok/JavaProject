@@ -5,25 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GaussSeidel {
-    private static final double EPSILON = 1e-6;
-    private static final int MAX_ITERATIONS = 100;
+    private static final double EPSILON = 1e-8;
+    private static final int MAX_ITERATIONS = 50;
     private static final String INPUT_FILE = "C:\\Users\\kupts\\IdeaProjects\\untitled\\src\\chisl\\task4/input.txt";
     private static final String OUTPUT_FILE = "C:\\Users\\kupts\\IdeaProjects\\untitled\\src\\chisl\\task4/output.txt";
 
-    // Пример 1: Нелинейная система уравнений
     private static double f1_1(double x1, double x2, double x3) {
-        return Math.pow(x1, 3) + x2 + x3 - 5;
+        return Math.pow(Math.sin(2*x1+Math.pow(x2,2)-6),2)+Math.cos(x2*x3)-1;
     }
 
     private static double f2_1(double x1, double x2, double x3) {
-        return x1 + 2 * Math.pow(x2, 2) + x3 - 12;
+        return Math.exp(Math.cos((3.14*x1/2))+Math.pow(x3,2))+2*Math.pow(x1,3)+Math.pow(x2,2)-7;
     }
 
     private static double f3_1(double x1, double x2, double x3) {
-        return 3 * Math.pow(x1, 2) + x2 + x3 - 2;
+        return 3*Math.pow(x1,2)-2*Math.pow(x2,2)+Math.pow(x3+1,2)+4;
     }
 
-    // Пример 2: Нелинейная система уравнений
     private static double f1_2(double x1, double x2, double x3) {
         return 2*x1+3*x2-x3-5;
     }
@@ -36,7 +34,6 @@ public class GaussSeidel {
         return 5*x1-2*x2+2*x3-7;
     }
 
-    // Пример 3: Нелинейная система уравнений
     private static double f1_3(double x1, double x2, double x3) {
         return x1 * x1 + x2 + x3 - 10;
     }
@@ -49,7 +46,6 @@ public class GaussSeidel {
         return x3 * x3 - x1 - x2 + 4;
     }
 
-    // Метод Ньютона для уточнения значения
     private static double newton(double x, double fValue, double derivativeValue) {
         if (Math.abs(derivativeValue) < EPSILON) {
             return Double.NaN;
@@ -57,7 +53,6 @@ public class GaussSeidel {
         return x - (fValue / derivativeValue);
     }
 
-    // Проверка уникальности корня
     private static boolean isUnique(List<double[]> roots, double x1, double x2, double x3) {
         for (double[] root : roots) {
             if (Math.abs(root[0] - x1) < EPSILON &&
@@ -69,7 +64,6 @@ public class GaussSeidel {
         return true;
     }
 
-    // Чтение интервала и шага из файла
     private static double[] readIntervalAndStep(String filename) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             double step = Double.parseDouble(reader.readLine().trim());
@@ -88,7 +82,6 @@ public class GaussSeidel {
         }
     }
 
-    // Запись корней в файл
     private static void writeRootsToFile(String filename, List<double[]> roots) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (double[] root : roots) {
@@ -109,7 +102,6 @@ public class GaussSeidel {
             double choice=data[3];
 
             List<double[]> roots = new ArrayList<>();
-            // Задайте здесь номер системы: 1, 2 или 3
 
             for (double initialX1 = intervalStart; initialX1 <= intervalEnd; initialX1 += step) {
                 for (double initialX2 = intervalStart; initialX2 <= intervalEnd; initialX2 += step) {
@@ -127,15 +119,14 @@ public class GaussSeidel {
                             x2Prev = x2;
                             x3Prev = x3;
 
-                            // Выбор системы
                             double f1Value, f2Value, f3Value, df1Value, df2Value, df3Value;
                             if (choice == 1) {
                                 f1Value = f1_1(x1, x2Prev, x3Prev);
-                                df1Value = 3 * Math.pow(x1, 2);
+                                df1Value = 4*Math.cos(2*x1+Math.pow(x2Prev,2)-6);
                                 f2Value = f2_1(x1, x2, x3Prev);
-                                df2Value = 4 * x2;
+                                df2Value = 2*x2;
                                 f3Value = f3_1(x1, x2, x3);
-                                df3Value = 1;
+                                df3Value = 2*x3+2;
                             } else if (choice == 2) {
                                 f1Value = f1_2(x1, x2Prev, x3Prev);
                                 df1Value = Math.cos(x1);
@@ -152,7 +143,6 @@ public class GaussSeidel {
                                 df3Value = 2 * x3;
                             }
 
-                            // Уточнение корней
                             x1 = newton(x1, f1Value, df1Value);
                             if (Double.isNaN(x1)) {
                                 validSolution = false;
